@@ -1,0 +1,8 @@
+html {
+	--header: black;
+	--bg: #111;
+	--fg: #222;
+	--el-bg: #333;
+	--text: white;
+	--text-inactive: gray;
+}

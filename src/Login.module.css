@@ -1,0 +1,23 @@
+.login {
+	display: flex;
+	flex-direction: column;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	min-width: 400px;
+	width: max-content;
+	height: auto;
+	padding: 10px;
+	gap: 10px;
+
+	background-color: var(--fg);
+	border-radius: 5px;
+}
+
+.loginTitle {
+	font-size: 1.5em;
+	font-weight: bold;
+	text-align: center;
+}

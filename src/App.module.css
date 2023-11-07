@@ -1,0 +1,52 @@
+.app {
+	background-color: var(--bg);
+	min-height: 100vh;
+	color: var(--text);
+}
+
+button {
+	background-color: var(--el-bg);
+	color: var(--text);
+	outline: none;
+	border: none;
+	padding: 10px;
+	border-radius: 5px;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+button:hover {
+	filter: brightness(125%);
+}
+
+input[type="text"],
+input[type="password"] {
+	background-color: var(--el-bg);
+	color: var(--text);
+	outline: none;
+	border: none;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+select {
+	background-color: var(--el-bg);
+	color: var(--text);
+	outline: none;
+	border: none;
+	padding: 10px;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+a,
+a:visited {
+	color: var(--text-inactive);
+}
+
+h1,
+h2,
+h3 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
