@@ -1,15 +1,11 @@
 import { createEffect } from 'solid-js';
 import { SetStoreFunction, Store, createStore } from 'solid-js/store';
+import { AccountInfo } from './api';
 
 export interface LocalState {
+	token: string | null,
 	accountInfo: AccountInfo | null,
 	theme: Theme,
-}
-
-export interface AccountInfo {
-	id: string,
-	name: string,
-	isAdmin: boolean,
 }
 
 
@@ -31,11 +27,14 @@ function createLocalStore<T extends object>(
 	return [state, setState];
 }
 
-const [localState, setLocalState] = createLocalStore('localState', { accountInfo: null, theme: Theme.DARK } as LocalState);
+const [localState, setLocalState] = createLocalStore('localState', { token: null, accountInfo: null, theme: Theme.DARK } as LocalState);
 export { localState, setLocalState };
 
 export const account = () => localState.accountInfo;
 export const setAccount = (account: AccountInfo) => setLocalState({ accountInfo: account });
 
+export const token = () => localState.token;
+export const setToken = (token: string) => setLocalState({ token });
+
 export const theme = () => Object.values(Theme).includes(localState.theme) ? localState.theme : Theme.DARK;
-export const setTheme = (theme: Theme) => setLocalState({ theme: theme });
+export const setTheme = (theme: Theme) => setLocalState({ theme });

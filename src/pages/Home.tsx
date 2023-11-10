@@ -5,7 +5,7 @@ import { account } from '../state';
 const Home: Component = () => {
 	return (
 		<Page title="Home">
-			<h1>Welcome, {account()?.name}</h1>
+			<h1>Welcome, {account()?.username}</h1>
 			You can manage your account settings here
 		</Page>
 	);

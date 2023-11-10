@@ -1,0 +1,17 @@
+.usernameSettings {
+	display: grid;
+	grid-template-columns: 1fr max-content;
+	gap: 5px;
+	width: 400px;
+}
+
+.passwordSettings {
+	display: flex;
+	flex-direction: column;
+	width: 400px;
+	gap: 5px;
+}
+
+.passwordSettings>button {
+	width: max-content;
+}
