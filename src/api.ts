@@ -27,10 +27,21 @@ export class API {
 		this.apiURL = apiURL;
 	}
 
+	private async checkResponse(response: Response) {
+		if (!response.ok) {
+			let json = null;
+			try {
+				json = await response.json();
+			} catch (e) { /* ignored */ }
+
+			throw json?.error || 'Request failed: ' + response.statusText;
+		}
+	}
+
 	async meta(): Promise<APIMeta> {
 		const response = await fetch(this.apiURL + '/meta');
 
-		if (!response.ok) throw 'Request failed: ' + response.statusText;
+		await this.checkResponse(response);
 
 		return await response.json();
 	}
@@ -41,7 +52,7 @@ export class API {
 			body: JSON.stringify({ username, password })
 		});
 
-		if (!response.ok) throw 'Request failed: ' + response.statusText;
+		await this.checkResponse(response);
 
 		const json = await response.json();
 		if (!json.token) throw 'Request failed: No token in response';
@@ -55,7 +66,7 @@ export class API {
 			headers: { 'Authorization': token }
 		});
 
-		if (!response.ok) throw 'Request failed: ' + response.statusText;
+		await this.checkResponse(response);
 	}
 
 	async me(token: string): Promise<AccountInfo> {
@@ -63,7 +74,7 @@ export class API {
 			headers: { 'Authorization': token }
 		});
 
-		if (!response.ok) throw 'Request failed: ' + response.statusText;
+		await this.checkResponse(response);
 
 		return await response.json();
 	}
@@ -73,7 +84,7 @@ export class API {
 			headers: { 'Authorization': token }
 		});
 
-		if (!response.ok) throw 'Request failed: ' + response.statusText;
+		await this.checkResponse(response);
 
 		return await response.json();
 	}

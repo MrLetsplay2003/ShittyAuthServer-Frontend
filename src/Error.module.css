@@ -1,4 +1,4 @@
-.login {
+.error {
 	display: flex;
 	flex-direction: column;
 
@@ -12,16 +12,16 @@
 	padding: 10px;
 	gap: 10px;
 
-	background-color: var(--fg);
+	background-color: var(--error-bg);
 	border-radius: 5px;
 }
 
-.loginTitle {
+.errorTitle {
 	font-size: 1.5em;
 	font-weight: bold;
 	text-align: center;
 }
 
-.loginError {
-	color: var(--error-text);
+.error>button {
+	background-color: var(--error-el-bg);
 }

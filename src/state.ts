@@ -1,4 +1,4 @@
-import { createEffect } from 'solid-js';
+import { createEffect, createSignal } from 'solid-js';
 import { SetStoreFunction, Store, createStore } from 'solid-js/store';
 import { AccountInfo } from './api';
 
@@ -38,3 +38,5 @@ export const setToken = (token: string) => setLocalState({ token });
 
 export const theme = () => Object.values(Theme).includes(localState.theme) ? localState.theme : Theme.DARK;
 export const setTheme = (theme: Theme) => setLocalState({ theme });
+
+export const [globalError, setGlobalError] = createSignal(null as string | null);
