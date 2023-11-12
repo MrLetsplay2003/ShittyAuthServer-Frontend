@@ -1,5 +1,5 @@
 import { Component, createSignal, useContext } from 'solid-js';
-import { account, setAccount, setGlobalError, setToken } from './state';
+import { setAccount, setToken } from './state';
 
 import styles from './Login.module.css';
 import { APIContext } from './api';

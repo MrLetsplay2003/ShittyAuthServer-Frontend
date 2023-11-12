@@ -2,7 +2,7 @@ import { createEffect, type Component, createSignal } from 'solid-js';
 
 import styles from './App.module.css';
 import Login from './Login';
-import { account, globalError, setAccount, setGlobalError, setLocalState, theme, token } from './state';
+import { account, globalError, setGlobalError, setLocalState, theme, token } from './state';
 import Home from './pages/Home';
 import { A, Route, Routes, useNavigate } from '@solidjs/router';
 import Admin from './pages/Admin';

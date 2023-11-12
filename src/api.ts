@@ -49,6 +49,7 @@ export class API {
 	async login(username: string, password: string): Promise<string> {
 		const response = await fetch(this.apiURL + '/login', {
 			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ username, password })
 		});
 
@@ -82,6 +83,30 @@ export class API {
 	async skin(token: string): Promise<SkinInfo> {
 		const response = await fetch(this.apiURL + '/skin', {
 			headers: { 'Authorization': token }
+		});
+
+		await this.checkResponse(response);
+
+		return await response.json();
+	}
+
+	async changeUsername(token: string, newUsername: string): Promise<void> {
+		const response = await fetch(this.apiURL + '/changeUsername', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'Authorization': token },
+			body: JSON.stringify({ newUsername })
+		});
+
+		await this.checkResponse(response);
+
+		return await response.json();
+	}
+
+	async changePassword(token: string, oldPassword: string, newPassword: string): Promise<void> {
+		const response = await fetch(this.apiURL + '/changePassword', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'Authorization': token },
+			body: JSON.stringify({ oldPassword, newPassword })
 		});
 
 		await this.checkResponse(response);
