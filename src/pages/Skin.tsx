@@ -27,7 +27,7 @@ const Skin: Component = () => {
 			{loading() && <h1>Loading...</h1>}
 			<h1>{account()?.username}</h1>
 			<h2>Skin Type</h2>
-			<select value={skin()?.skinType}>
+			<select value={skin()?.skinType} onchange={e => api.updateSkinSettings(token()!, { skinType: e.currentTarget.value as 'steve' | 'alex' })}>
 				<option value="steve">Classic (Steve)</option>
 				<option value="alex">Slim (Alex)</option>
 			</select>
@@ -42,7 +42,7 @@ const Skin: Component = () => {
 			<img src={skin()?.capeURL} alt={'Cape failed to load'} width={200} class={styles.skinImage} />
 			<br />
 			<label for="enableCape">Enable cape</label>
-			<input id="enableCape" type="checkbox" checked={skin()?.capeEnabled} />
+			<input id="enableCape" type="checkbox" checked={skin()?.capeEnabled} onchange={e => api.updateSkinSettings(token()!, { capeEnabled: e.currentTarget.checked })} />
 			<h3>Upload new cape</h3>
 			<input type="file" />
 			<button>Upload</button>

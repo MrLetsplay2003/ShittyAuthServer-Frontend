@@ -2,7 +2,7 @@ import { createEffect, type Component, createSignal } from 'solid-js';
 
 import styles from './App.module.css';
 import Login from './Login';
-import { account, globalError, setGlobalError, setLocalState, theme, token } from './state';
+import { account, globalError, setAccount, setGlobalError, setLocalState, theme, token } from './state';
 import Home from './pages/Home';
 import { A, Route, Routes, useNavigate } from '@solidjs/router';
 import Admin from './pages/Admin';
@@ -27,6 +27,14 @@ const App: Component = () => {
 			setGlobalError(errorToString(e));
 			setLoading(false);
 		}
+
+		if (token() != null) {
+			try {
+				setAccount(await api.me(token()!));
+			} catch (e) {
+				alert(errorToString(e)); // TODO: better alerts
+			}
+		}
 	});
 
 	return (
@@ -35,14 +43,14 @@ const App: Component = () => {
 			{loading() && <div>Loading...</div>}
 
 			{globalError() != null && <Error />}
-			{!loading() && globalError() == null && (account() == null || token() == null ? <Login /> :
+			{!loading() && globalError() == null && (token() == null ? <Login /> :
 				<Routes>
 					<Route path="/" component={Home} />
 					<Route path="/account" component={Account} />
 					<Route path="/skin" component={Skin} />
 					{account()?.isAdmin && <Route path="/admin" component={Admin} />}
 					<Route path="/logout" component={() => {
-						setLocalState({ token: null, accountInfo: null });
+						setLocalState({ token: null });
 						navigate('/');
 						return <></>;
 					}} />

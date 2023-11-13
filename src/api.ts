@@ -12,9 +12,14 @@ export interface AccountInfo {
 
 export interface SkinInfo {
 	skinURL: string,
-	skinType: 'steve' | 'alex'
+	skinType: 'steve' | 'alex',
 	capeURL: string,
 	capeEnabled: boolean,
+}
+
+export interface SkinSettings {
+	skinType?: 'steve' | 'alex',
+	capeEnabled?: boolean,
 }
 
 export const TESTING_API_URL = 'http://localhost:8880/api/shittyauth';
@@ -107,6 +112,18 @@ export class API {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', 'Authorization': token },
 			body: JSON.stringify({ oldPassword, newPassword })
+		});
+
+		await this.checkResponse(response);
+
+		return await response.json();
+	}
+
+	async updateSkinSettings(token: string, skinSettings: SkinSettings) {
+		const response = await fetch(this.apiURL + '/updateSkinSettings', {
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json', 'Authorization': token },
+			body: JSON.stringify(skinSettings)
 		});
 
 		await this.checkResponse(response);

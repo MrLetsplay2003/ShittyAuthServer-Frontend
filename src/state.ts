@@ -4,10 +4,8 @@ import { AccountInfo } from './api';
 
 export interface LocalState {
 	token: string | null,
-	accountInfo: AccountInfo | null,
 	theme: Theme,
 }
-
 
 export enum Theme {
 	DARK = 'dark',
@@ -27,11 +25,10 @@ function createLocalStore<T extends object>(
 	return [state, setState];
 }
 
-const [localState, setLocalState] = createLocalStore('localState', { token: null, accountInfo: null, theme: Theme.DARK } as LocalState);
+const [localState, setLocalState] = createLocalStore('localState', { token: null, theme: Theme.DARK } as LocalState);
 export { localState, setLocalState };
 
-export const account = () => localState.accountInfo;
-export const setAccount = (account: AccountInfo) => setLocalState({ accountInfo: account });
+export const [account, setAccount] = createSignal(null as AccountInfo | null);
 
 export const token = () => localState.token;
 export const setToken = (token: string) => setLocalState({ token });
