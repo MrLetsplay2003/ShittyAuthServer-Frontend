@@ -1,34 +1,21 @@
-## Usage
+# ShittyAuthServer-Frontend
+This project is intended to be a replacement for the WebinterfaceAPI-based default frontend of the [ShittyAuthServer](https://github.com/MrLetsplay2003/ShittyAuthServer).
 
-Those templates dependencies are maintained via [pnpm](https://pnpm.io) via `pnpm up -Lri`.
+It is currently heavily work in progress and not production ready!
 
-This is the reason you see a `pnpm-lock.yaml`. That being said, any package manager will work. This file can be safely be removed once you clone a template.
+## Configuration
+By default, the frontend will use `http://localhost:8880/api/shittyauth` as the API URL.
 
-```bash
-$ npm install # or pnpm install or yarn install
+To change this, edit the `public/config.json` file and insert the correct URL.
+
+## Notes
+Currently, to prevent CORS issues, you should run the frontend under the same origin (host + port) as the backend (e.g. using a reverse proxy setup).
+
+## Building
+To build the project for deployment, just run the
 ```
+$ npm run build
+```
+command. This will generate all necessary files in the `dist` directory.
 
-### Learn more on the [Solid Website](https://solidjs.com) and come chat with us on our [Discord](https://discord.com/invite/solidjs)
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm run dev` or `npm start`
-
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br>
-
-### `npm run build`
-
-Builds the app for production to the `dist` folder.<br>
-It correctly bundles Solid in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
-
-## Deployment
-
-You can deploy the `dist` folder to any static host provider (netlify, surge, now, etc.)
+Then, just host the files using any HTTP server you like.
