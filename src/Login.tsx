@@ -1,15 +1,13 @@
-import { Component, createSignal, useContext } from 'solid-js';
+import { Component, createSignal } from 'solid-js';
 import { setAccount, setToken } from './state';
 
 import styles from './Login.module.css';
-import { APIContext } from './api';
 import { errorToString } from './util';
+import { api } from './api';
 
 const Login: Component = () => {
 	const [loading, setLoading] = createSignal(false);
 	const [error, setError] = createSignal(null as string | null);
-
-	const api = useContext(APIContext);
 
 	let loginUser: HTMLInputElement | undefined;
 	let loginPassword: HTMLInputElement | undefined;
@@ -26,10 +24,10 @@ const Login: Component = () => {
 				setLoading(true);
 
 				try {
-					const token = await api.login(loginUser!.value, loginPassword!.value);
+					const token = await api().login(loginUser!.value, loginPassword!.value);
 					setToken(token);
 
-					const accountInfo = await api.me(token);
+					const accountInfo = await api().me(token);
 					setAccount(accountInfo);
 				} catch (e) {
 					setError(errorToString(e));

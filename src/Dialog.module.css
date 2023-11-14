@@ -1,0 +1,45 @@
+.dialogContainer {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 10;
+}
+
+.dialog {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 10;
+	background-color: var(--fg);
+	padding: 10px;
+	border-radius: 5px;
+	min-width: 200px;
+}
+
+.dialogTitle {
+	font-weight: bold;
+	font-size: 1.2em;
+}
+
+.dialogText {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.dialogButtons {
+	display: flex;
+	justify-content: end;
+	gap: 5px;
+}
+
+.dangerButton {
+	background-color: var(--danger);
+}
+
+.successButton {
+	background-color: var(--success);
+}

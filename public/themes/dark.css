@@ -9,4 +9,7 @@ html {
 	--error-text: orangered;
 	--error-bg: orangered;
 	--error-el-bg: #ff7000;
+
+	--danger: orangered;
+	--success: #080;
 }

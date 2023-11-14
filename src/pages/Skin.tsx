@@ -1,7 +1,7 @@
-import { Component, createEffect, createSignal, useContext } from 'solid-js';
+import { Component, createEffect, createSignal } from 'solid-js';
 import Page from './Page';
-import { account, setGlobalError, token } from '../state';
-import { APIContext, SkinInfo } from '../api';
+import { account, showMessageDialog, token } from '../state';
+import { SkinInfo, api } from '../api';
 
 import styles from './Skin.module.css';
 import { errorToString } from '../util';
@@ -10,15 +10,13 @@ const Skin: Component = () => {
 	const [loading, setLoading] = createSignal(true);
 	const [skin, setSkin] = createSignal(null as SkinInfo | null);
 
-	const api = useContext(APIContext);
-
 	createEffect(async () => {
 		try {
-			const skin = await api.skin(token()!);
+			const skin = await api().skin(token()!);
 			setSkin(skin);
 			setLoading(false);
 		} catch (e) {
-			setGlobalError(errorToString(e));
+			showMessageDialog('Failed to load skin', errorToString(e));
 		}
 	});
 
@@ -27,7 +25,7 @@ const Skin: Component = () => {
 			{loading() && <h1>Loading...</h1>}
 			<h1>{account()?.username}</h1>
 			<h2>Skin Type</h2>
-			<select value={skin()?.skinType} onchange={e => api.updateSkinSettings(token()!, { skinType: e.currentTarget.value as 'steve' | 'alex' })}>
+			<select value={skin()?.skinType} onchange={e => api().updateSkinSettings(token()!, { skinType: e.currentTarget.value as 'steve' | 'alex' })}>
 				<option value="steve">Classic (Steve)</option>
 				<option value="alex">Slim (Alex)</option>
 			</select>
@@ -42,7 +40,7 @@ const Skin: Component = () => {
 			<img src={skin()?.capeURL} alt={'Cape failed to load'} width={200} class={styles.skinImage} />
 			<br />
 			<label for="enableCape">Enable cape</label>
-			<input id="enableCape" type="checkbox" checked={skin()?.capeEnabled} onchange={e => api.updateSkinSettings(token()!, { capeEnabled: e.currentTarget.checked })} />
+			<input id="enableCape" type="checkbox" checked={skin()?.capeEnabled} onchange={e => api().updateSkinSettings(token()!, { capeEnabled: e.currentTarget.checked })} />
 			<h3>Upload new cape</h3>
 			<input type="file" />
 			<button>Upload</button>

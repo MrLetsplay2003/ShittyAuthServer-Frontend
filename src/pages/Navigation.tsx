@@ -6,7 +6,7 @@ import styles from './Navigation.module.css';
 import { IconTypes } from 'solid-icons';
 import { account } from '../state';
 
-interface NavigationItemProps {
+export interface NavigationItemProps {
 	icon: IconTypes,
 	name: string,
 	href: string,

@@ -1,4 +1,4 @@
-import { createContext } from 'solid-js';
+import { createSignal } from 'solid-js';
 
 export interface APIMeta {
 	version: number
@@ -21,8 +21,6 @@ export interface SkinSettings {
 	skinType?: 'steve' | 'alex',
 	capeEnabled?: boolean,
 }
-
-export const TESTING_API_URL = 'http://localhost:8880/api/shittyauth';
 
 export class API {
 
@@ -115,11 +113,9 @@ export class API {
 		});
 
 		await this.checkResponse(response);
-
-		return await response.json();
 	}
 
-	async updateSkinSettings(token: string, skinSettings: SkinSettings) {
+	async updateSkinSettings(token: string, skinSettings: SkinSettings): Promise<void> {
 		const response = await fetch(this.apiURL + '/updateSkinSettings', {
 			method: 'PUT',
 			headers: { 'Content-Type': 'application/json', 'Authorization': token },
@@ -127,10 +123,8 @@ export class API {
 		});
 
 		await this.checkResponse(response);
-
-		return await response.json();
 	}
 
 }
 
-export const APIContext = createContext<API>(new API(TESTING_API_URL));
+export const [api, setAPI] = createSignal(new API(''));

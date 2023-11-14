@@ -1,14 +1,12 @@
-import { Component, createSignal, useContext } from 'solid-js';
+import { Component, createSignal } from 'solid-js';
 import Page from './Page';
 
 import styles from './Account.module.css';
-import { APIContext } from '../api';
+import { api } from '../api';
 import { errorToString } from '../util';
-import { setAccount, token } from '../state';
+import { account, setAccount, showMessageDialog, token } from '../state';
 
 const Account: Component = () => {
-	const api = useContext(APIContext);
-
 	const [username, setUsername] = createSignal('');
 	const [oldPassword, setOldPassword] = createSignal('');
 	const [newPassword, setNewPassword] = createSignal('');
@@ -16,35 +14,36 @@ const Account: Component = () => {
 
 	const changeUsername = async () => {
 		try {
-			await api.changeUsername(token()!, username());
+			await api().changeUsername(token()!, username());
+			setAccount(await api().me(token()!));
 			setUsername('');
-			setAccount(await api.me(token()!));
-			alert('Username changed'); // TODO: better alerts
+			showMessageDialog('Username changed', 'Your username was changed to ' + account()?.username);
 		} catch (e) {
-			alert(errorToString(e)); // TODO: better alerts
+			showMessageDialog('Failed to change username', errorToString(e));
 		}
 	};
 
 	const changePassword = async () => {
 		if (newPassword() != newPasswordConfirm()) {
-			alert('Passwords don\'t match'); // TODO: better alerts
+			showMessageDialog('Cannot change password', 'Passwords don\'t match');
 			return;
 		}
 
 		try {
-			await api.changePassword(token()!, oldPassword(), newPassword());
+			await api().changePassword(token()!, oldPassword(), newPassword());
 			setOldPassword('');
 			setNewPassword('');
 			setNewPasswordConfirm('');
-			alert('Password changed'); // TODO: better alerts
+			showMessageDialog('Password changed', 'Successfully changed your password');
 		} catch (e) {
-			alert(errorToString(e)); // TODO: better alerts
+			showMessageDialog('Cannot change password', errorToString(e));
 		}
 	};
 
 	return (
 		<Page title="Account">
 			<h1>Username</h1>
+			<span>Your username is currently "{account()?.username}"</span>
 			<div class={styles.usernameSettings}>
 				<input type="text" placeholder="New Username" value={username()} oninput={e => setUsername(e.currentTarget.value.trim())} />
 				<button onclick={changeUsername} disabled={username().trim().length == 0}>Change Username</button>

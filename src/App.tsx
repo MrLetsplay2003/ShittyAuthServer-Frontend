@@ -1,38 +1,55 @@
-import { createEffect, type Component, createSignal } from 'solid-js';
+import { createEffect, type Component, createSignal, For } from 'solid-js';
 
 import styles from './App.module.css';
 import Login from './Login';
-import { account, globalError, setAccount, setGlobalError, setLocalState, theme, token } from './state';
+import { account, dialogs, setAccount, setLocalState, showMessageDialog, theme, token } from './state';
 import Home from './pages/Home';
 import { A, Route, Routes, useNavigate } from '@solidjs/router';
 import Admin from './pages/Admin';
 import Skin from './pages/Skin';
 import Account from './pages/Account';
-import { API, TESTING_API_URL } from './api';
-import Error from './Error';
+import { API, api, setAPI } from './api';
 import { errorToString } from './util';
+import Dialog from './Dialog';
+
+interface Config {
+	apiBaseURL: string,
+}
 
 const App: Component = () => {
 	const navigate = useNavigate();
-	const api = new API(TESTING_API_URL);
 
 	const [loading, setLoading] = createSignal(true);
+	const [error, setError] = createSignal(null as string | null);
 
 	createEffect(async () => {
 		try {
-			const meta = await api.meta();
+			const configResponse = await fetch('config.json');
+			if (!configResponse.ok) throw 'Failed to load config';
+
+			const config: Config = await configResponse.json();
+			setAPI(new API(config.apiBaseURL));
+		} catch (e) {
+			setError(errorToString(e));
+			setLoading(false);
+			return;
+		}
+
+		try {
+			const meta = await api().meta();
 			if (meta.version < 1) throw 'Incompatible API version: ' + meta.version;
 			setLoading(false);
 		} catch (e) {
-			setGlobalError(errorToString(e));
+			setError(errorToString(e));
 			setLoading(false);
+			return;
 		}
 
 		if (token() != null) {
 			try {
-				setAccount(await api.me(token()!));
+				setAccount(await api().me(token()!));
 			} catch (e) {
-				alert(errorToString(e)); // TODO: better alerts
+				showMessageDialog('Failed to load account', errorToString(e));
 			}
 		}
 	});
@@ -42,8 +59,10 @@ const App: Component = () => {
 			<link rel="stylesheet" href={'themes/' + theme() + '.css'} />
 			{loading() && <div>Loading...</div>}
 
-			{globalError() != null && <Error />}
-			{!loading() && globalError() == null && (token() == null ? <Login /> :
+			<For each={dialogs()}>{d => <Dialog {...d} />}</For>
+
+			{error() != null && <Dialog title='Failed to load application' text={error()!} buttons={[{ name: 'Reload', action: () => window.location.reload() }]} />}
+			{!loading() && error() == null && (token() == null ? <Login /> :
 				<Routes>
 					<Route path="/" component={Home} />
 					<Route path="/account" component={Account} />
