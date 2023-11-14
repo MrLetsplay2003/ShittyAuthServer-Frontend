@@ -24,7 +24,7 @@ export interface SkinSettings {
 
 export class API {
 
-	private apiURL: string;
+	public apiURL: string;
 
 	constructor(apiURL: string) {
 		this.apiURL = apiURL;
@@ -123,6 +123,17 @@ export class API {
 		});
 
 		await this.checkResponse(response);
+	}
+
+	async adminAccounts(token: string): Promise<AccountInfo[]> {
+		const response = await fetch(this.apiURL + '/admin/accounts', {
+			method: 'GET',
+			headers: { 'Authorization': token }
+		});
+
+		await this.checkResponse(response);
+
+		return await response.json();
 	}
 
 }

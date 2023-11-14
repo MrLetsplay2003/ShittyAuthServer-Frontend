@@ -1,0 +1,43 @@
+.accountItem {
+	background-color: var(--fg);
+	border-radius: 5px;
+	padding: 10px;
+
+	display: grid;
+	grid-template-areas:
+		"icon username"
+		"icon userprops";
+	grid-template-columns: max-content 1fr;
+	gap: 10px;
+}
+
+.userIcon {
+	grid-area: icon;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.userIcon>img {
+	width: 64px;
+	height: 64px;
+	image-rendering: pixelated;
+}
+
+.username {
+	grid-area: username;
+	font-weight: bold;
+	font-size: 1.5em;
+}
+
+.userProps {
+	grid-area: userprops;
+	display: grid;
+	grid-template-columns: max-content auto;
+	gap: 0 10px;
+}
+
+.userProps>:nth-child(odd) {
+	font-weight: bold;
+}

@@ -21,7 +21,7 @@ const Skin: Component = () => {
 	});
 
 	return (
-		<Page title="Account">
+		<Page title="Skin & Cape">
 			{loading() && <h1>Loading...</h1>}
 			<h1>{account()?.username}</h1>
 			<h2>Skin Type</h2>
