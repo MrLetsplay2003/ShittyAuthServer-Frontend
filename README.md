@@ -19,3 +19,10 @@ $ npm run build
 command. This will generate all necessary files in the `dist` directory.
 
 Then, just host the files using any HTTP server you like.
+
+## Running locally
+To test the frontend locally and for development, use the
+```
+$ npm run dev
+```
+command.
