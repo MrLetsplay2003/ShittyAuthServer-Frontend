@@ -22,12 +22,33 @@ export interface SkinSettings {
 	capeEnabled?: boolean,
 }
 
+export interface TextureInfo {
+	id: string,
+	name: string,
+	url: string,
+}
+
+export interface DefaultSkins {
+	skins: TextureInfo[],
+	slimSkins: TextureInfo[],
+}
+
 export class API {
 
 	public apiURL: string;
 
 	constructor(apiURL: string) {
 		this.apiURL = apiURL;
+	}
+
+	private arrayBufferToBase64(buffer: ArrayBuffer) {
+		let binary = '';
+		const bytes = new Uint8Array(buffer);
+		const len = bytes.byteLength;
+		for (let i = 0; i < len; i++) {
+			binary += String.fromCharCode(bytes[i]);
+		}
+		return window.btoa(binary);
 	}
 
 	private async checkResponse(response: Response) {
@@ -134,6 +155,66 @@ export class API {
 		await this.checkResponse(response);
 
 		return await response.json();
+	}
+
+	async defaultSkins(): Promise<DefaultSkins> {
+		const response = await fetch(this.apiURL + '/defaultSkins', {
+			method: 'GET',
+		});
+
+		await this.checkResponse(response);
+
+		return await response.json();
+	}
+
+	async defaultCapes(): Promise<TextureInfo[]> {
+		const response = await fetch(this.apiURL + '/defaultCapes', {
+			method: 'GET',
+		});
+
+		await this.checkResponse(response);
+
+		return await response.json();
+	}
+
+	async updateSkin(token: string, skinBytes: ArrayBuffer): Promise<void> {
+		const response = await fetch(this.apiURL + '/skin', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'Authorization': token },
+			body: JSON.stringify({ skin: this.arrayBufferToBase64(skinBytes) })
+		});
+
+		await this.checkResponse(response);
+	}
+
+	async resetSkin(token: string, skin: string): Promise<void> {
+		const response = await fetch(this.apiURL + '/resetSkin', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'Authorization': token },
+			body: JSON.stringify({ skin: skin })
+		});
+
+		await this.checkResponse(response);
+	}
+
+	async updateCape(token: string, skinBytes: ArrayBuffer): Promise<void> {
+		const response = await fetch(this.apiURL + '/cape', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'Authorization': token },
+			body: JSON.stringify({ cape: this.arrayBufferToBase64(skinBytes) })
+		});
+
+		await this.checkResponse(response);
+	}
+
+	async resetCape(token: string, cape: string): Promise<void> {
+		const response = await fetch(this.apiURL + '/resetCape', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'Authorization': token },
+			body: JSON.stringify({ cape: cape })
+		});
+
+		await this.checkResponse(response);
 	}
 
 }
