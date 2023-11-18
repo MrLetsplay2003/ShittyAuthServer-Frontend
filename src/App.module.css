@@ -25,7 +25,8 @@ button:disabled:hover {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="file"] {
 	background-color: var(--el-bg);
 	color: var(--text);
 	outline: none;

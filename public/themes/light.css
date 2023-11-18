@@ -12,4 +12,6 @@ html {
 
 	--danger: orangered;
 	--success: limegreen;
+
+	color-scheme: light;
 }

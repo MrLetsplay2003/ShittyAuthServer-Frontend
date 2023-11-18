@@ -12,4 +12,6 @@ html {
 
 	--danger: orangered;
 	--success: #080;
+
+	color-scheme: dark;
 }

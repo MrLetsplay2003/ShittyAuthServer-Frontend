@@ -1,8 +1,8 @@
-import { Component, ParentComponent, children } from 'solid-js';
+import { Component, ParentComponent, children, createSignal } from 'solid-js';
 
 import styles from './Page.module.css';
 import Navigation from './Navigation';
-import { BiSolidMoon, BiSolidSun } from 'solid-icons/bi';
+import { BiRegularMenu, BiSolidMoon, BiSolidSun } from 'solid-icons/bi';
 import { Theme, setTheme, theme } from '../state';
 import { IconTypes } from 'solid-icons';
 
@@ -26,6 +26,9 @@ interface PageProps {
 
 const Page: ParentComponent<PageProps> = (props) => {
 	const ch = children(() => props.children);
+	const [menuVisible, setMenuVisible] = createSignal(false);
+
+	const toggleMenu = () => setMenuVisible(v => !v);
 
 	return (
 		<div class={styles.page}>
@@ -34,10 +37,11 @@ const Page: ParentComponent<PageProps> = (props) => {
 				<span>ShittyAuthServer</span>
 			</header>
 			<span class={styles.pageHeaderTitle}>
+				<BiRegularMenu onclick={toggleMenu} class={styles.pageSidebarToggle} />
 				{props.title}
 				<ThemeSwitcher icon={theme() == Theme.LIGHT ? BiSolidSun : BiSolidMoon} />
 			</span>
-			<nav class={styles.pageSidebar}>
+			<nav class={styles.pageSidebar} data-visible={menuVisible()}>
 				<Navigation />
 			</nav>
 			<div class={styles.pageContent}>
