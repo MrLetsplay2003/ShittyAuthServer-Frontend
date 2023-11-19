@@ -2,6 +2,7 @@ import { Component, createSignal } from 'solid-js';
 import Page from './Page';
 
 import styles from './Account.module.css';
+import pageStyles from './Page.module.css';
 import { api } from '../api';
 import { errorToString } from '../util';
 import { account, setAccount, showMessageDialog, token } from '../state';
@@ -42,18 +43,25 @@ const Account: Component = () => {
 
 	return (
 		<Page title="Account">
-			<h1>Username</h1>
-			<span>Your username is currently "{account()?.username}"</span>
-			<div class={styles.usernameSettings}>
-				<input type="text" placeholder="New Username" value={username()} oninput={e => setUsername(e.currentTarget.value.trim())} />
-				<button onclick={changeUsername} disabled={username().trim().length == 0}>Change Username</button>
-			</div>
-			<h1>Password</h1>
-			<div class={styles.passwordSettings}>
-				<input type="password" placeholder="Old password" value={oldPassword()} oninput={e => setOldPassword(e.currentTarget.value.trim())} />
-				<input type="password" placeholder="New password" value={newPassword()} oninput={e => setNewPassword(e.currentTarget.value.trim())} />
-				<input type="password" placeholder="Confirm new password" value={newPasswordConfirm()} oninput={e => setNewPasswordConfirm(e.currentTarget.value.trim())} />
-				<button onclick={changePassword} disabled={oldPassword().length == 0 || newPassword().length == 0 || newPasswordConfirm().length == 0}>Change Password</button>
+			<div class={pageStyles.optionsPage}>
+				<div class={pageStyles.optionsSection}>
+					<h1>Username</h1>
+					<span>Your username is currently "{account()?.username}"</span>
+					<div class={styles.usernameSettings}>
+						<input type="text" placeholder="New Username" value={username()} oninput={e => setUsername(e.currentTarget.value.trim())} />
+						<button onclick={changeUsername} disabled={username().trim().length == 0}>Change Username</button>
+					</div>
+				</div>
+
+				<div class={pageStyles.optionsSection}>
+					<h1>Password</h1>
+					<div class={styles.passwordSettings}>
+						<input type="password" placeholder="Old password" value={oldPassword()} oninput={e => setOldPassword(e.currentTarget.value.trim())} />
+						<input type="password" placeholder="New password" value={newPassword()} oninput={e => setNewPassword(e.currentTarget.value.trim())} />
+						<input type="password" placeholder="Confirm new password" value={newPasswordConfirm()} oninput={e => setNewPasswordConfirm(e.currentTarget.value.trim())} />
+						<button onclick={changePassword} disabled={oldPassword().length == 0 || newPassword().length == 0 || newPasswordConfirm().length == 0}>Change Password</button>
+					</div>
+				</div>
 			</div>
 		</Page>
 	);

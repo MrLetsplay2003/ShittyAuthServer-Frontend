@@ -5,12 +5,13 @@ import Login from './Login';
 import { account, dialogs, setAccount, setLocalState, showMessageDialog, theme, token } from './state';
 import Home from './pages/Home';
 import { A, Route, Routes, useNavigate } from '@solidjs/router';
-import Admin from './pages/Admin';
 import Skin from './pages/Skin';
 import Account from './pages/Account';
 import { API, api, setAPI } from './api';
 import { errorToString } from './util';
 import Dialog from './Dialog';
+import Users from './pages/Users';
+import Settings from './pages/Settings';
 
 interface Config {
 	apiBaseURL: string,
@@ -67,7 +68,12 @@ const App: Component = () => {
 					<Route path="/" component={Home} />
 					<Route path="/account" component={Account} />
 					<Route path="/skin" component={Skin} />
-					{account()?.isAdmin && <Route path="/admin" component={Admin} />}
+					{account()?.isAdmin &&
+						<>
+							<Route path="/users" component={Users} />
+							<Route path="/settings" component={Settings} />
+						</>
+					}
 					<Route path="/logout" component={() => {
 						setLocalState({ token: null });
 						navigate('/');

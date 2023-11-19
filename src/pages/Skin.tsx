@@ -4,10 +4,10 @@ import { showMessageDialog, token } from '../state';
 import { DefaultSkins, SkinInfo, TextureInfo, api } from '../api';
 
 import styles from './Skin.module.css';
+import pageStyles from './Page.module.css';
 import { errorToString } from '../util';
 
 const Skin: Component = () => {
-	const [loading, setLoading] = createSignal(true);
 	const [skin, setSkin] = createSignal(null as SkinInfo | null);
 	const [defaultSkins, setDefaultSkins] = createSignal({ skins: [], slimSkins: [] } as DefaultSkins);
 	const [defaultCapes, setDefaultCapes] = createSignal([] as TextureInfo[]);
@@ -76,8 +76,6 @@ const Skin: Component = () => {
 			setSkin(await api().skin(token()!));
 			setDefaultSkins(await api().defaultSkins());
 			setDefaultCapes(await api().defaultCapes());
-
-			setLoading(false);
 		} catch (e) {
 			showMessageDialog('Failed to load skin', errorToString(e));
 		}
@@ -85,25 +83,24 @@ const Skin: Component = () => {
 
 	return (
 		<Page title="Skin & Cape">
-			<div class={styles.optionsPage}>
-				<div class={styles.optionsSection}>
-					{loading() && <h1>Loading...</h1>}
-					<h2>Skin Type</h2>
+			<div class={pageStyles.optionsPage}>
+				<div class={pageStyles.optionsSection}>
+					<h1>Skin Type</h1>
 					<select value={skin()?.skinType} onchange={e => api().updateSkinSettings(token()!, { skinType: e.currentTarget.value as 'steve' | 'alex' })}>
 						<option value="steve">Classic (Steve)</option>
 						<option value="alex">Slim (Alex)</option>
 					</select>
 				</div>
 
-				<div class={styles.optionsSection}>
-					<h2>Skin</h2>
-					<h3>Current skin</h3>
+				<div class={pageStyles.optionsSection}>
+					<h1>Skin</h1>
+					<h2>Current skin</h2>
 					<img src={skin()?.skinURL} alt={'Skin failed to load'} class={styles.skinImage} />
-					<h3>Upload new skin</h3>
+					<h2>Upload new skin</h2>
 					<input type="file" ref={skinFileInput} />
 					<button onclick={uploadSkin}>Upload</button>
 
-					<h3>Use a default skin</h3>
+					<h2>Use a default skin</h2>
 					<select ref={skinChoice}>
 						<For each={defaultSkins().skins}>{c => <option value={c.id}>{c.name}</option>}</For>
 						<For each={defaultSkins().slimSkins}>{c => <option value={c.id}>{c.name} (Slim)</option>}</For>
@@ -111,20 +108,20 @@ const Skin: Component = () => {
 					<button onclick={resetSkin}>Use skin</button>
 				</div>
 
-				<div class={styles.optionsSection}>
-					<h2>Cape</h2>
-					<h3>Current cape</h3>
+				<div class={pageStyles.optionsSection}>
+					<h1>Cape</h1>
+					<h2>Current cape</h2>
 					<img src={skin()?.capeURL} alt={'Cape failed to load'} class={styles.skinImage} />
 					<br />
-					<div class={styles.checkboxOption}>
+					<div class={pageStyles.checkboxOption}>
 						<label for="enableCape">Enable cape</label>
 						<input id="enableCape" type="checkbox" checked={skin()?.capeEnabled} onchange={e => api().updateSkinSettings(token()!, { capeEnabled: e.currentTarget.checked })} />
 					</div>
-					<h3>Upload new cape</h3>
+					<h2>Upload new cape</h2>
 					<input type="file" ref={capeFileInput} />
 					<button onclick={uploadCape}>Upload</button>
 
-					<h3>Use a default cape</h3>
+					<h2>Use a default cape</h2>
 					<select ref={capeChoice}>
 						<For each={defaultCapes()}>{c => <option value={c.id}>{c.name}</option>}</For>
 					</select>

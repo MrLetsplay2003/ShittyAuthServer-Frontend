@@ -5,10 +5,11 @@ import { showMessageDialog, token } from '../state';
 import { errorToString } from '../util';
 import AccountItem from '../components/AccountItem';
 
-import styles from './Admin.module.css';
+import styles from './Users.module.css';
 
-const Admin: Component = () => {
+const Users: Component = () => {
 	const [accounts, setAccounts] = createSignal([] as AccountInfo[]);
+	const [filter, setFilter] = createSignal('');
 
 	createEffect(async () => {
 		try {
@@ -19,15 +20,15 @@ const Admin: Component = () => {
 	});
 
 	return (
-		<Page title="Admin">
-			<h1>Accounts</h1>
+		<Page title="User Administration">
+			<input type="text" placeholder='Search for accounts' value={filter()} oninput={e => setFilter(e.currentTarget.value)} />
 			<ul class={styles.accountList}>
-				<For each={accounts()}>{a => <li><AccountItem account={a} /></li>}</For>
+				<For each={accounts().filter(a => a.id.toLocaleLowerCase().includes(filter().toLocaleLowerCase()) || a.username.toLocaleLowerCase().includes(filter().toLocaleLowerCase()))}>
+					{a => <li><AccountItem account={a} /></li>}
+				</For>
 			</ul>
-			<h1>Settings</h1>
-			Admin settings...
 		</Page>
 	);
 };
 
-export default Admin;
+export default Users;

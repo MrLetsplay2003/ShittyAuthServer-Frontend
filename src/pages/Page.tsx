@@ -1,7 +1,7 @@
 import { Component, ParentComponent, children, createSignal } from 'solid-js';
 
 import styles from './Page.module.css';
-import Navigation from './Navigation';
+import Navigation from '../components/Navigation';
 import { BiRegularMenu, BiSolidMoon, BiSolidSun } from 'solid-icons/bi';
 import { Theme, setTheme, theme } from '../state';
 import { IconTypes } from 'solid-icons';

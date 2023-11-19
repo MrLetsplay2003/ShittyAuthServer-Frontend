@@ -70,6 +70,27 @@
 	display: none;
 }
 
+.optionsPage {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.optionsSection {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+	background-color: var(--fg);
+	padding: 10px;
+	border-radius: 5px;
+	width: min(calc(100% - 20px), 750px);
+}
+
+.checkboxOption {
+	display: flex;
+	gap: 5px;
+}
+
 @media only screen and (max-width: 46.875em) {
 
 	.page {

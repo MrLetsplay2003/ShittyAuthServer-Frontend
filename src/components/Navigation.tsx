@@ -1,6 +1,6 @@
 import { A } from '@solidjs/router';
 import { Component } from 'solid-js';
-import { BiSolidHome, BiSolidLogOut, BiSolidPalette, BiSolidShield, BiSolidUserAccount } from 'solid-icons/bi';
+import { BiSolidCog, BiSolidHome, BiSolidLogOut, BiSolidPalette, BiSolidShield, BiSolidUserAccount } from 'solid-icons/bi';
 
 import styles from './Navigation.module.css';
 import { IconTypes } from 'solid-icons';
@@ -22,7 +22,12 @@ const Navigation: Component = () => {
 			<NavigationItem icon={BiSolidHome} name="Home" href="/" />
 			<NavigationItem icon={BiSolidUserAccount} name="Account" href="/account" />
 			<NavigationItem icon={BiSolidPalette} name="Skin & Cape" href="/skin" />
-			{account()?.isAdmin && <NavigationItem icon={BiSolidShield} name="Administration" href="/admin" />}
+			{account()?.isAdmin &&
+				<>
+					<NavigationItem icon={BiSolidShield} name="User Administration" href="/users" />
+					<NavigationItem icon={BiSolidCog} name="Server Settings" href="/settings" />
+				</>
+			}
 			<NavigationItem icon={BiSolidLogOut} name="Log Out" href="/logout" />
 		</ul>
 	);

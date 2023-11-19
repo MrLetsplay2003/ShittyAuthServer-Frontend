@@ -2,13 +2,46 @@
 	background-color: var(--fg);
 	border-radius: 5px;
 	padding: 10px;
+}
 
+.accountItem>summary {
 	display: grid;
 	grid-template-areas:
-		"icon username"
-		"icon userprops";
-	grid-template-columns: max-content 1fr;
+		"arrow icon username"
+		"arrow icon userprops";
+	grid-template-columns: max-content max-content 1fr;
 	gap: 10px;
+}
+
+.accountItem .arrowIcon>* {
+	transform: rotate(0deg);
+	transition: all 0.1s;
+}
+
+.accountItem .arrowIcon {
+	grid-area: arrow;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.accountItem[open] .arrowIcon>* {
+	transform: rotate(90deg);
+}
+
+.accountDetails {
+	display: flex;
+	flex-direction: column;
+	margin-top: 10px;
+	width: min(calc(100%), 750px);
+	gap: 5px;
+}
+
+.accountOptions {
+	display: grid;
+	grid-template-columns: 1fr max-content;
+	gap: 5px;
 }
 
 .userIcon {
