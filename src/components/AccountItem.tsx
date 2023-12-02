@@ -1,4 +1,4 @@
-import { Component } from 'solid-js';
+import { Component, createSignal } from 'solid-js';
 import { AccountInfo, api } from '../api';
 
 import styles from './AccountItem.module.css';
@@ -8,9 +8,15 @@ import { Link } from '@solidjs/router';
 
 export interface AccountItemProps {
 	account: AccountInfo,
+	changeUsername: (newUsername: string) => void,
+	changePassword: (newPassword: string) => void,
+	delete: () => void
 }
 
 const AccountItem: Component<AccountItemProps> = props => {
+	const [username, setUsername] = createSignal('');
+	const [password, setPassword] = createSignal('');
+
 	return (
 		<details class={styles.accountItem}>
 			<summary>
@@ -29,12 +35,12 @@ const AccountItem: Component<AccountItemProps> = props => {
 					<div>You can't edit your own account here, head over to your <Link href='/account'>account page</Link></div> :
 					<>
 						<div class={styles.accountOptions}>
-							<input type="text" placeholder="Username" />
-							<button>Set username</button>
-							<input type="text" placeholder="Password" />
-							<button>Set password</button>
+							<input type="text" placeholder="Username" value={username()} oninput={e => setUsername(e.currentTarget.value)} />
+							<button disabled={username().trim().length == 0} onclick={() => props.changeUsername(username().trim())}>Set username</button>
+							<input type="password" placeholder="Password" value={password()} oninput={e => setPassword(e.currentTarget.value)} />
+							<button disabled={password().trim().length == 0} onclick={() => { props.changePassword(password().trim()); setPassword(''); }}>Set password</button>
 						</div>
-						<button>Delete account</button>
+						<button onclick={props.delete}>Delete account</button>
 					</>
 				}
 			</div>

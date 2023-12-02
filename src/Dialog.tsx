@@ -15,11 +15,11 @@ export interface DialogProps {
 	onDismiss?: () => void,
 }
 
-function createButton(button: (string | DialogButton)) {
+function createButton(button: (string | DialogButton), dismiss?: () => void) {
 	if (typeof button == 'string') {
-		return <button class={styles.defaultButton}>{button}</button>;
+		return <button onclick={dismiss} class={styles.defaultButton}>{button}</button>;
 	} else {
-		return <button onclick={button.action} class={styles[button.type + 'Button']}>{button.name}</button>;
+		return <button onclick={() => { button.action?.(); dismiss?.(); }} class={styles[button.type + 'Button']}>{button.name}</button>;
 	}
 }
 
@@ -32,7 +32,7 @@ const Dialog: Component<DialogProps> = props => {
 				<div class={styles.dialogTitle}>{props.title}</div>
 				<div class={styles.dialogText}>{props.text}</div>
 				<div class={styles.dialogButtons}>
-					<For each={buttons()}>{b => createButton(b)}</For>
+					<For each={buttons()}>{b => createButton(b, props.onDismiss)}</For>
 				</div>
 			</div>
 		</div>

@@ -146,17 +146,6 @@ export class API {
 		await this.checkResponse(response);
 	}
 
-	async adminAccounts(token: string): Promise<AccountInfo[]> {
-		const response = await fetch(this.apiURL + '/admin/accounts', {
-			method: 'GET',
-			headers: { 'Authorization': token }
-		});
-
-		await this.checkResponse(response);
-
-		return await response.json();
-	}
-
 	async defaultSkins(): Promise<DefaultSkins> {
 		const response = await fetch(this.apiURL + '/defaultSkins', {
 			method: 'GET',
@@ -212,6 +201,47 @@ export class API {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', 'Authorization': token },
 			body: JSON.stringify({ cape: cape })
+		});
+
+		await this.checkResponse(response);
+	}
+
+	async adminAccounts(token: string): Promise<AccountInfo[]> {
+		const response = await fetch(this.apiURL + '/admin/accounts', {
+			method: 'GET',
+			headers: { 'Authorization': token }
+		});
+
+		await this.checkResponse(response);
+
+		return await response.json();
+	}
+
+	async adminChangeUsername(token: string, userID: string, newUsername: string): Promise<void> {
+		const response = await fetch(this.apiURL + '/admin/changeUsername', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'Authorization': token },
+			body: JSON.stringify({ userID, newUsername })
+		});
+
+		await this.checkResponse(response);
+	}
+
+	async adminChangePassword(token: string, userID: string, newPassword: string): Promise<void> {
+		const response = await fetch(this.apiURL + '/admin/changePassword', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'Authorization': token },
+			body: JSON.stringify({ userID, newPassword })
+		});
+
+		await this.checkResponse(response);
+	}
+
+	async adminDeleteAccount(token: string, userID: string): Promise<void> {
+		const response = await fetch(this.apiURL + '/admin/deleteAccount', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json', 'Authorization': token },
+			body: JSON.stringify({ userID })
 		});
 
 		await this.checkResponse(response);
