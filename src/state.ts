@@ -32,7 +32,7 @@ export { localState, setLocalState };
 export const [account, setAccount] = createSignal(null as AccountInfo | null);
 
 export const token = () => localState.token;
-export const setToken = (token: string) => setLocalState({ token });
+export const setToken = (token: string | null) => setLocalState({ token });
 
 export const theme = () => Object.values(Theme).includes(localState.theme) ? localState.theme : Theme.DARK;
 export const setTheme = (theme: Theme) => setLocalState({ theme });

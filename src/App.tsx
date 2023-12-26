@@ -2,7 +2,7 @@ import { createEffect, type Component, createSignal, For } from 'solid-js';
 
 import styles from './App.module.css';
 import Login from './Login';
-import { account, dialogs, setAccount, setLocalState, showMessageDialog, theme, token } from './state';
+import { account, dialogs, setAccount, setLocalState, setToken, showMessageDialog, theme, token } from './state';
 import Home from './pages/Home';
 import { A, Route, Routes, useNavigate } from '@solidjs/router';
 import Skin from './pages/Skin';
@@ -50,6 +50,7 @@ const App: Component = () => {
 			try {
 				setAccount(await api().me(token()!));
 			} catch (e) {
+				setToken(null);
 				showMessageDialog('Failed to load account', errorToString(e));
 			}
 		}
