@@ -33,6 +33,10 @@ export interface DefaultSkins {
 	slimSkins: TextureInfo[],
 }
 
+export interface GlobalSettings {
+	authlibCompat?: boolean,
+}
+
 export class API {
 
 	public apiURL: string;
@@ -242,6 +246,27 @@ export class API {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json', 'Authorization': token },
 			body: JSON.stringify({ userID })
+		});
+
+		await this.checkResponse(response);
+	}
+
+	async adminGlobalSettings(token: string): Promise<GlobalSettings> {
+		const response = await fetch(this.apiURL + '/admin/globalSettings', {
+			method: 'GET',
+			headers: { 'Authorization': token }
+		});
+
+		await this.checkResponse(response);
+
+		return await response.json();
+	}
+
+	async adminUpdateGlobalSettings(token: string, settings: GlobalSettings): Promise<void> {
+		const response = await fetch(this.apiURL + '/admin/updateGlobalSettings', {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json', 'Authorization': token },
+			body: JSON.stringify(settings)
 		});
 
 		await this.checkResponse(response);

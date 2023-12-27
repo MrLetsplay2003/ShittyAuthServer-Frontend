@@ -1,7 +1,7 @@
 import { Component, For, createEffect, createSignal } from 'solid-js';
 import Page from './Page';
 import { showMessageDialog, token } from '../state';
-import { DefaultSkins, SkinInfo, TextureInfo, api } from '../api';
+import { DefaultSkins, SkinInfo, SkinSettings, TextureInfo, api } from '../api';
 
 import styles from './Skin.module.css';
 import pageStyles from './Page.module.css';
@@ -71,6 +71,15 @@ const Skin: Component = () => {
 		}
 	};
 
+	const updateSkinSettings = async (settings: SkinSettings) => {
+		try {
+			await api().updateSkinSettings(token()!, settings);
+			setSkin(await api().skin(token()!));
+		} catch (e) {
+			showMessageDialog('Failed to update skin settings', errorToString(e));
+		}
+	};
+
 	createEffect(async () => {
 		try {
 			setSkin(await api().skin(token()!));
@@ -86,7 +95,7 @@ const Skin: Component = () => {
 			<div class={pageStyles.optionsPage}>
 				<div class={pageStyles.optionsSection}>
 					<h1>Skin Type</h1>
-					<select value={skin()?.skinType} onchange={e => api().updateSkinSettings(token()!, { skinType: e.currentTarget.value as 'steve' | 'alex' })}>
+					<select value={skin()?.skinType} onchange={e => updateSkinSettings({ skinType: e.currentTarget.value as 'steve' | 'alex' })}>
 						<option value="steve">Classic (Steve)</option>
 						<option value="alex">Slim (Alex)</option>
 					</select>
@@ -115,7 +124,7 @@ const Skin: Component = () => {
 					<br />
 					<div class={pageStyles.checkboxOption}>
 						<label for="enableCape">Enable cape</label>
-						<input id="enableCape" type="checkbox" checked={skin()?.capeEnabled} onchange={e => api().updateSkinSettings(token()!, { capeEnabled: e.currentTarget.checked })} />
+						<input id="enableCape" type="checkbox" checked={skin()?.capeEnabled} onchange={e => updateSkinSettings({ capeEnabled: e.currentTarget.checked })} />
 					</div>
 					<h2>Upload new cape</h2>
 					<input type="file" ref={capeFileInput} />
